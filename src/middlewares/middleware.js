@@ -2,7 +2,8 @@ const hemler = require('helmet');
 const compress = require('compression');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const passport = require('passport')
+const passport = require('passport');
+const logging = require('../logs/logging');
 
 module.exports = function(app) {
 
@@ -20,4 +21,7 @@ module.exports = function(app) {
 
     app.use(passport.initialize());
     app.use(passport.session());
+
+    // Logging
+    logging(app);
 }
