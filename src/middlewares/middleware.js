@@ -4,6 +4,8 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const logging = require('../logs/logging');
+const passport = require('passport');
+const auth_config = require('../modules/auths/auth.config');
 
 module.exports = function(app) {
 
@@ -24,4 +26,7 @@ module.exports = function(app) {
 
     // Logging
     logging(app);
+
+    // passport config
+    auth_config(passport);
 }

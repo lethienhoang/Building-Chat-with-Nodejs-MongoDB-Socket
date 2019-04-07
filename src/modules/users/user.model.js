@@ -3,6 +3,7 @@ const validator = require('validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('config');
+const constant = require('../../constants/constant');
 
 const UserSchema = new mongoose.Schema({
     email: {
@@ -23,6 +24,12 @@ const UserSchema = new mongoose.Schema({
         required: [true, 'Password is required'],
         minlength: [6, 'Password need to be longer'],
         trim: true,
+        validate: {
+            validator(password) {
+                return constant.PASSWORD_REG.test(password);
+            },
+            message: '{VALUE} is not a valid password!'
+        }
 
     },
     displayname: {
@@ -56,7 +63,7 @@ UserSchema.methods.generateJWT = function() {
         email: this.email,
         displayname: this.displayname,
         exp: parseInt(exp.getTime() / 1000)
-    }, config.get('jwtPrivateKey'))
+    }, config.get(constant.JWT_SECRET));
 }
 
 UserSchema.methods.toAuthJSON = function(){
@@ -67,3 +74,5 @@ UserSchema.methods.toAuthJSON = function(){
         token: this.generateJWT()
     };
 };
+
+module.exports = mongoose.model('User', UserSchema);
