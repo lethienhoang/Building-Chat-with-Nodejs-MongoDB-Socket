@@ -6,8 +6,9 @@ exports.signup_post = async function(req, res) {
     try {
 
         // Validation
-        userValidation(req.body);
-
+        const { error } =userValidation(req.body);
+        if (error) return res.status(400).send(error.details[0].message);
+        
         // Create user
         const user = new User(req.body);
         await user.save();
