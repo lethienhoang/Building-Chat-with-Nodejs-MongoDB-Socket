@@ -1,7 +1,7 @@
 const Room = require('./room.model');
 const User = require('../users/user.model');
 const roomValidation = require('./room.validation');
-
+const _ = require('lodash');
 
 
 exports.room_query = async function(req, res) {

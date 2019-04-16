@@ -7,7 +7,19 @@ const logging = require('../logs/logging');
 const passport = require('passport');
 const auth_config = require('../modules/auths/auth.config');
 
-module.exports = function(app) {
+module.exports = function (app) {
+
+    // allow CORS
+    app.all('*', function (req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+        res.header('Access-Control-Allow-Headers', 'Content-type,Accept,X-Access-Token,X-Key');
+        if (req.method == 'OPTIONS') {
+            res.status(200).end();
+        } else {
+            next();
+        }
+    });
 
     if (process.env.NODE_ENV === 'production') {
         app.use(compress())
